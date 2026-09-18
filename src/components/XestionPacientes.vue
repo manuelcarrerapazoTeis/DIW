@@ -14,7 +14,7 @@
             style="text-align: center"
             :class="{ 'input-error': erros.dni }"
             @blur="validarCampo('dni')"
-          />
+          >
           <p class="erro-campo">
             {{ mensaxes.dni }}
           </p>
@@ -30,7 +30,7 @@
               validarCampo('nome');
               capitalizar('nome');
             "
-          />
+          >
           <p class="erro-campo">
             {{ mensaxes.nome }}
           </p>
@@ -46,7 +46,7 @@
               validarCampo('apelidos');
               capitalizar('apelidos');
             "
-          />
+          >
           <p class="erro-campo">
             {{ mensaxes.apelidos }}
           </p>
@@ -62,7 +62,7 @@
             required
             :class="{ 'input-error': erros.fecha_nacimiento }"
             @blur="validarCampo('fecha_nacimiento')"
-          />
+          >
           <p class="erro-campo">
             {{ mensaxes.fecha_nacimiento }}
           </p>
@@ -76,7 +76,7 @@
             placeholder="981123456"
             :class="{ 'input-error': erros.telefono }"
             @blur="validarCampo('telefono')"
-          />
+          >
           <p class="erro-campo">
             {{ mensaxes.telefono }}
           </p>
@@ -90,7 +90,7 @@
             placeholder="exemplo@email.com"
             :class="{ 'input-error': erros.correo }"
             @blur="validarCampo('correo')"
-          />
+          >
           <p class="erro-campo">
             {{ mensaxes.correo }}
           </p>
@@ -106,22 +106,9 @@
             required
             :class="{ 'input-error': erros.direccion }"
             @blur="validarCampo('direccion')"
-          />
+          >
           <p class="erro-campo">
             {{ mensaxes.direccion }}
-          </p>
-        </div>
-        <div class="campo campo-municipio">
-          <label>Municipio:</label>
-          <input
-            v-model="novoPaciente.municipio"
-            type="text"
-            required
-            :class="{ 'input-error': erros.municipio }"
-            @blur="validarCampo('municipio')"
-          />
-          <p class="erro-campo">
-            {{ mensaxes.municipio }}
           </p>
         </div>
         <div class="campo campo-provincia">
@@ -132,7 +119,12 @@
             :class="{ 'input-error': erros.provincia }"
             @blur="validarCampo('provincia')"
           >
-            <option value="" disabled>Selecciona provincia</option>
+            <option
+              value=""
+              disabled
+            >
+              Selecciona provincia
+            </option>
             <option
               v-for="provincia in provincias"
               :key="provincia.id"
@@ -145,9 +137,27 @@
             {{ mensaxes.provincia }}
           </p>
         </div>
+        <div class="campo campo-municipio">
+          <label>Municipio:</label>
+          <input
+            v-model="novoPaciente.municipio"
+            type="text"
+            required
+            :class="{ 'input-error': erros.municipio }"
+            @blur="validarCampo('municipio')"
+          >
+          <p class="erro-campo">
+            {{ mensaxes.municipio }}
+          </p>
+        </div>
       </div>
 
-      <button type="submit" class="btn-guardar">Gardar</button>
+      <button
+        type="submit"
+        class="btn-guardar"
+      >
+        Gardar
+      </button>
     </form>
 
     <h4>Listaxe de pacientes</h4>
@@ -170,29 +180,49 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(u, index) in pacientes" :key="index">
+          <tr
+            v-for="(u, index) in pacientes"
+            :key="index"
+          >
             <td>{{ index + 1 }}</td>
-            <td style="text-align: center">{{ u.dni }}</td>
+            <td style="text-align: center">
+              {{ u.dni }}
+            </td>
             <td>{{ u.nome }}</td>
             <td>{{ u.apelidos }}</td>
-            <td style="text-align: center">{{ u.fecha_nacimiento }}</td>
-            <td style="text-align: center">{{ u.telefono }}</td>
+            <td style="text-align: center">
+              {{ u.fecha_nacimiento }}
+            </td>
+            <td style="text-align: center">
+              {{ u.telefono }}
+            </td>
             <td>{{ u.correo }}</td>
             <td>{{ u.direccion }}</td>
             <td>{{ u.municipio }}</td>
             <td>{{ u.provincia }}</td>
-            <td style="text-align: center" class="acciones">
-              <button @click="editarUsuario(index)" title="Editar">
+            <td
+              style="text-align: center"
+              class="acciones"
+            >
+              <button 
+                title="Editar" 
+                @click="editarUsuario(index)"
+              >
                 Editar
               </button>
-              <button @click="eliminarUsuario(index)" title="Eliminar">
+              <button 
+                title="Eliminar"
+                @click="eliminarUsuario(index)" 
+              >
                 Borrar
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <p v-else>Non hai pacientes cargados.</p>
+      <p v-else>
+        Non hai pacientes cargados.
+      </p>
     </div>
   </div>
 </template>
