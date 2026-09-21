@@ -1,6 +1,6 @@
 <template>
   <div class="xestion-pacientes">
-    <h4>Xestion de pacientes</h4>
+    <h4>🏥 Xestion de pacientes</h4>
     <form @submit.prevent="gardarPaciente">
       <div class="fila">
         <div class="campo campo-dni">
@@ -160,7 +160,7 @@
       </button>
     </form>
 
-    <h4>Listaxe de pacientes</h4>
+    <h4>📋 Listaxe de pacientes</h4>
 
     <div class="tabla-contenedor">
       <table v-if="pacientes.length > 0">
@@ -406,7 +406,8 @@ function editarUsuario(index) {
   width: 100%;
   background: white;
   padding: 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
 }
 
@@ -425,8 +426,6 @@ form {
   align-items: flex-start;
 }
 
-/* Cada campo: label + input en la misma linea, mensaje debajo */
-/* height fija para que todos midan lo mismo y no se descuadren */
 .campo {
   display: flex;
   flex-direction: row;
@@ -437,7 +436,6 @@ form {
   overflow: hidden;
 }
 
-/* El mensaje se pone debajo, ocupando el ancho completo */
 .erro-campo {
   flex-basis: 100%;
   color: #d6336c;
@@ -449,33 +447,15 @@ form {
   height: 0.9rem;
 }
 
-.campo-dni {
-  flex: 1;
-}
-.campo-nome {
-  flex: 2;
-}
-.campo-apelidos {
-  flex: 2;
-}
-.campo-fecha {
-  flex: 1.5;
-}
-.campo-telefono {
-  flex: 1.5;
-}
-.campo-correo {
-  flex: 2;
-}
-.campo-direccion {
-  flex: 3;
-}
-.campo-municipio {
-  flex: 2;
-}
-.campo-provincia {
-  flex: 1.8;
-}
+.campo-dni { flex: 1; }
+.campo-nome { flex: 2; }
+.campo-apelidos { flex: 2; }
+.campo-fecha { flex: 1.5; }
+.campo-telefono { flex: 1.5; }
+.campo-correo { flex: 2; }
+.campo-direccion { flex: 3; }
+.campo-municipio { flex: 2; }
+.campo-provincia { flex: 1.8; }
 
 .campo label {
   min-width: 80px;
@@ -488,30 +468,39 @@ form {
   flex: 1;
   min-width: 0;
   padding: 0.5rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--gris-borde);
   border-radius: 0;
   box-sizing: border-box;
+  font-size: 0.9rem;
 }
 
-/* Fondo rosa para los inputs con error */
+.campo select:focus,
+.campo input:focus {
+  outline: none;
+  border-color: var(--verde-principal);
+  box-shadow: 0 0 0 2px rgba(76, 161, 54, 0.15);
+}
+
 .input-error {
   background-color: #ffd6e0 !important;
   border: 1px solid #ff4d6d !important;
 }
 
 .btn-guardar {
-  background-color: #39af49;
+  background-color: var(--verde-principal);
   color: white;
   border: none;
-  padding: 0.5rem 2rem;
+  padding: 0.6rem 2.2rem;
   cursor: pointer;
   margin: 0 auto;
   display: block;
   font-size: 1rem;
+  border-radius: 3px;
+  transition: background 0.2s;
 }
 
 .btn-guardar:hover {
-  background-color: #24a84cdc;
+  background-color: var(--verde-oscuro);
 }
 
 .tabla-contenedor {
@@ -524,12 +513,14 @@ table {
   border-collapse: separate;
   margin-top: 1rem;
   font-size: 0.75rem;
-  border: 1px solid #ddd;
+  border: 1px solid var(--gris-borde);
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 th,
 td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--gris-borde);
   padding: 0.5rem;
   text-align: left;
   white-space: nowrap;
@@ -537,59 +528,47 @@ td {
 
 th {
   text-align: center;
-  background-color: #f8f9fa;
+  background-color: var(--verde-claro);
+  color: var(--verde-oscuro);
 }
 
 h4 {
   margin-bottom: 1rem;
   font-weight: 600;
-  background-color: #34a33a;
+  background-color: var(--verde-principal);
   color: white;
-  padding: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-radius: 3px;
 }
 
 .acciones button {
   background: none;
-  border: 1px solid #ccc;
+  border: 1px solid var(--verde-principal);
+  color: var(--verde-principal);
   cursor: pointer;
   font-size: 0.7rem;
   margin: 0 0.2rem;
-  padding: 0.2rem 0.4rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+
+.acciones button:hover {
+  background: var(--verde-principal);
+  color: white;
 }
 
 @media (max-width: 1200px) {
-  .fila {
-    flex-wrap: wrap;
-  }
-
-  .campo {
-    flex: 1 1 45%;
-  }
-
+  .fila { flex-wrap: wrap; }
+  .campo { flex: 1 1 45%; }
   .campo-direccion,
-  .campo-municipio {
-    flex: 1 1 100%;
-  }
+  .campo-municipio { flex: 1 1 100%; }
 }
 
 @media (max-width: 768px) {
-  .xestion-pacientes {
-    padding: 1rem;
-  }
-
-  .fila {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .campo {
-    flex: 1 1 100%;
-    height: auto;
-    min-height: 3.2rem;
-  }
-
-  .erro-campo {
-    padding-left: 0;
-  }
+  .xestion-pacientes { padding: 1rem; }
+  .fila { flex-direction: column; gap: 0.5rem; }
+  .campo { flex: 1 1 100%; height: auto; min-height: 3.2rem; }
+  .erro-campo { padding-left: 0; }
 }
 </style>

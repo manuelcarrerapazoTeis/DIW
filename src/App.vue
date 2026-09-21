@@ -1,18 +1,35 @@
 <template>
   <div id="app">
-    <!-- Aquí se carga el componente principal DE MOMENTO-->
-    <XestionPacientes />
+    <NavBar />
+    <main class="contenido-principal">
+      <router-view />
+    </main>
+    <FooTer />
   </div>
 </template>
 
 <script setup>
-import XestionPacientes from './components/XestionPacientes.vue'
+import NavBar from './components/NavBar.vue';
+import FooTer from './components/FooTer.vue';
 </script>
 
 <style>
+/* Paleta verde global de la app */
+:root {
+  --verde-principal: #4ca136;
+  --verde-oscuro: #3a7c2a;
+  --verde-claro: #e8f5e3;
+  --gris-texto: #333;
+  --gris-suave: #777;
+  --gris-borde: #ddd;
+  --amarillo: #ffe66d;
+}
+
 :global(body) {
   margin: 0;
   background: #f6f6f6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--gris-texto);
 }
 
 #app {
@@ -26,10 +43,13 @@ import XestionPacientes from './components/XestionPacientes.vue'
   justify-content: flex-start;
 }
 
+.contenido-principal {
+  flex: 1;
+}
+
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
   }
 }
-
 </style>
