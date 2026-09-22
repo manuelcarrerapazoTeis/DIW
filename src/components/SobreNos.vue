@@ -9,7 +9,7 @@
 
 <style scoped>
 .pagina {
-  background: rgba(255, 255, 255, 0.637);
+  background: rgba(255, 255, 255, 0);
   padding: 2rem;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);

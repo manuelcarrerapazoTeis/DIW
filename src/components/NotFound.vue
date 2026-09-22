@@ -1,8 +1,13 @@
 <template>
   <div class="not-found">
     <h2>A páxina que buscas non existe</h2>
-    <img src="../assets/img/404.png" alt="404 Not Found" />
-    <p class="mensaxe">Comproba a dirección ou volve á páxina principal.</p>
+    <img
+      src="../assets/img/404.png"
+      alt="404 Not Found"
+    >
+    <p class="mensaxe">
+      Comproba a dirección ou volve á páxina principal.
+    </p>
   </div>
 </template>
 
