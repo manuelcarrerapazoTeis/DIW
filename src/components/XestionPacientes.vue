@@ -404,7 +404,7 @@ function editarUsuario(index) {
 <style scoped>
 .xestion-pacientes {
   width: 100%;
-  background: white;
+  background: rgba(255, 255, 255, 0);
   padding: 2rem;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
@@ -432,8 +432,8 @@ form {
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
-  height: 3.2rem;
-  overflow: hidden;
+  height: 3.6rem;
+  overflow: visible;
 }
 
 .erro-campo {
@@ -455,7 +455,7 @@ form {
 .campo-correo { flex: 2; }
 .campo-direccion { flex: 3; }
 .campo-municipio { flex: 2; }
-.campo-provincia { flex: 1.8; }
+.campo-provincia { flex: 1.9; }
 
 .campo label {
   min-width: 80px;

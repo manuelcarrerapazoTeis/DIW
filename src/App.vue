@@ -25,11 +25,13 @@ import FooTer from './components/FooTer.vue';
   --amarillo: #ffe66d;
 }
 
-:global(body) {
+body {
   margin: 0;
-  background: #f6f6f6;
+  background: #f6f6f6 url('./assets/img/fondo.png') no-repeat center center fixed;
+  background-size: cover;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--gris-texto);
+  overflow-y: hidden;
 }
 
 #app {
@@ -41,6 +43,7 @@ import FooTer from './components/FooTer.vue';
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  background: transparent; 
 }
 
 .contenido-principal {
