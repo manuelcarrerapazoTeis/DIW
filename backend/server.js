@@ -23,7 +23,7 @@ app.get('/api/municipios', (req, res) => {
     res.json(datosJson)
 })
 
-// Iniciamos el servidor en el puerto 3000
+// Iniciamos el servidor en el puerto indicado
 const PORT = 3000
 app.listen(PORT, () => {
     console.log(`Servidor funcionando en http://localhost:${PORT}`)

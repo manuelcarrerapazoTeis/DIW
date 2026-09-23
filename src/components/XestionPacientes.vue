@@ -14,10 +14,8 @@
             style="text-align: center"
             :class="{ 'input-error': erros.dni }"
             @blur="validarCampo('dni')"
-          >
-          <p class="erro-campo">
-            {{ mensaxes.dni }}
-          </p>
+          />
+          <p class="erro-campo">{{ mensaxes.dni }}</p>
         </div>
         <div class="campo campo-nome">
           <label>Nome:</label>
@@ -30,10 +28,8 @@
               validarCampo('nome');
               capitalizar('nome');
             "
-          >
-          <p class="erro-campo">
-            {{ mensaxes.nome }}
-          </p>
+          />
+          <p class="erro-campo">{{ mensaxes.nome }}</p>
         </div>
         <div class="campo campo-apelidos">
           <label>Apelidos:</label>
@@ -46,10 +42,8 @@
               validarCampo('apelidos');
               capitalizar('apelidos');
             "
-          >
-          <p class="erro-campo">
-            {{ mensaxes.apelidos }}
-          </p>
+          />
+          <p class="erro-campo">{{ mensaxes.apelidos }}</p>
         </div>
       </div>
 
@@ -62,10 +56,8 @@
             required
             :class="{ 'input-error': erros.fecha_nacimiento }"
             @blur="validarCampo('fecha_nacimiento')"
-          >
-          <p class="erro-campo">
-            {{ mensaxes.fecha_nacimiento }}
-          </p>
+          />
+          <p class="erro-campo">{{ mensaxes.fecha_nacimiento }}</p>
         </div>
         <div class="campo campo-telefono">
           <label>Telefono:</label>
@@ -76,10 +68,8 @@
             placeholder="981123456"
             :class="{ 'input-error': erros.telefono }"
             @blur="validarCampo('telefono')"
-          >
-          <p class="erro-campo">
-            {{ mensaxes.telefono }}
-          </p>
+          />
+          <p class="erro-campo">{{ mensaxes.telefono }}</p>
         </div>
         <div class="campo campo-correo">
           <label>Correo:</label>
@@ -90,10 +80,8 @@
             placeholder="exemplo@email.com"
             :class="{ 'input-error': erros.correo }"
             @blur="validarCampo('correo')"
-          >
-          <p class="erro-campo">
-            {{ mensaxes.correo }}
-          </p>
+          />
+          <p class="erro-campo">{{ mensaxes.correo }}</p>
         </div>
       </div>
 
@@ -106,58 +94,64 @@
             required
             :class="{ 'input-error': erros.direccion }"
             @blur="validarCampo('direccion')"
-          >
-          <p class="erro-campo">
-            {{ mensaxes.direccion }}
-          </p>
+          />
+          <p class="erro-campo">{{ mensaxes.direccion }}</p>
         </div>
         <div class="campo campo-provincia">
           <label>Provincia:</label>
           <select
             v-model="novoPaciente.provincia"
             required
-            :class="{ 'input-error': erros.provincia }"
+            :class="{
+              'input-error': erros.provincia,
+              'placeholder-select': !novoPaciente.provincia,
+            }"
             @blur="validarCampo('provincia')"
+            @change="cargarMunicipios"
           >
-            <option
-              value=""
-              disabled
-            >
-              Selecciona provincia
-            </option>
+            <option value="" disabled>Selecciona provincia</option>
             <option
               v-for="provincia in provincias"
               :key="provincia.id"
               :value="provincia.id"
             >
-              {{ provincia.nombre }}
+              {{ provincia.nm }}
             </option>
           </select>
-          <p class="erro-campo">
-            {{ mensaxes.provincia }}
-          </p>
+          <p class="erro-campo">{{ mensaxes.provincia }}</p>
         </div>
         <div class="campo campo-municipio">
           <label>Municipio:</label>
-          <input
+          <select
             v-model="novoPaciente.municipio"
-            type="text"
             required
-            :class="{ 'input-error': erros.municipio }"
+            :class="{
+              'input-error': erros.municipio,
+              'placeholder-select': !novoPaciente.municipio,
+            }"
             @blur="validarCampo('municipio')"
           >
-          <p class="erro-campo">
-            {{ mensaxes.municipio }}
-          </p>
+            <option value="" disabled>Selecciona municipio</option>
+
+            <option v-if="!novoPaciente.provincia" value="" disabled>
+              Selecciona la provincia primero
+            </option>
+
+            <template v-else>
+              <option
+                v-for="municipio in municipiosFiltrados"
+                :key="municipio.id"
+                :value="municipio.nm"
+              >
+                {{ municipio.nm }}
+              </option>
+            </template>
+          </select>
+          <p class="erro-campo">{{ mensaxes.municipio }}</p>
         </div>
       </div>
 
-      <button
-        type="submit"
-        class="btn-guardar"
-      >
-        Gardar
-      </button>
+      <button type="submit" class="btn-guardar">Gardar</button>
     </form>
 
     <h4>📋 Listaxe de pacientes</h4>
@@ -180,60 +174,42 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="(u, index) in pacientes"
-            :key="index"
-          >
+          <tr v-for="(u, index) in pacientes" :key="index">
             <td>{{ index + 1 }}</td>
-            <td style="text-align: center">
-              {{ u.dni }}
-            </td>
+            <td style="text-align: center">{{ u.dni }}</td>
             <td>{{ u.nome }}</td>
             <td>{{ u.apelidos }}</td>
-            <td style="text-align: center">
-              {{ u.fecha_nacimiento }}
-            </td>
-            <td style="text-align: center">
-              {{ u.telefono }}
-            </td>
+            <td style="text-align: center">{{ u.fecha_nacimiento }}</td>
+            <td style="text-align: center">{{ u.telefono }}</td>
             <td>{{ u.correo }}</td>
             <td>{{ u.direccion }}</td>
             <td>{{ u.municipio }}</td>
-            <td>{{ u.provincia }}</td>
-            <td
-              style="text-align: center"
-              class="acciones"
-            >
-              <button 
-                title="Editar" 
-                @click="editarUsuario(index)"
-              >
+            <td>{{ nombreProvincia(u.provincia) }}</td>
+            <td style="text-align: center" class="acciones">
+              <button title="Editar" @click="editarPacientes(index)">
                 Editar
               </button>
-              <button 
-                title="Eliminar"
-                @click="eliminarUsuario(index)" 
-              >
+              <button title="Eliminar" @click="eliminarPacientes(index)">
                 Borrar
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <p v-else>
-        Non hai pacientes cargados.
-      </p>
+      <p v-else>Non hai pacientes cargados.</p>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
+import { obtenerProvincias, obtenerMunicipios } from "../api/municipios.js";
 
 const pacientes = ref([]);
-const provincias = ref([]);
 
-// Erros (true/false para pintar el input de rosa)
+const provincias = ref([]);
+const municipios = ref([]);
+
 const erros = reactive({
   dni: false,
   nome: false,
@@ -246,7 +222,6 @@ const erros = reactive({
   provincia: false,
 });
 
-// Mensaxes de erro (texto que se muestra debajo del campo)
 const mensaxes = reactive({
   dni: "",
   nome: "",
@@ -271,31 +246,65 @@ const novoPaciente = reactive({
   provincia: "",
 });
 
-onMounted(() => {
+// Municipios filtrados por provincia seleccionada
+const municipiosFiltrados = computed(() => {
+  if (!novoPaciente.provincia) return [];
+  return municipios.value.filter((m) =>
+    m.id.startsWith(novoPaciente.provincia),
+  );
+});
+
+// Nombre de provincia a partir de su id (para la tabla)
+function nombreProvincia(idProvincia) {
+  const p = provincias.value.find((p) => p.id === idProvincia);
+  return p ? p.nm : idProvincia;
+}
+
+// Al cambiar provincia, reseteamos el municipio
+async function cargarMunicipios() {
+  // Limpiamos el municipio seleccionado y su posible error
+  novoPaciente.municipio = "";
+  erros.municipio = false;
+  mensaxes.municipio = "";
+
+  if (novoPaciente.provincia === "") {
+    municipios.value = [];
+    return;
+  }
+
+  try {
+    municipios.value = await obtenerMunicipios(novoPaciente.provincia);
+  } catch (error) {
+    console.error("Erro ao cargar os municipios:", error);
+    municipios.value = [];
+  }
+}
+
+onMounted(async () => {
+  // Paciente de ejemplo
   pacientes.value = [
     {
-      dni: "A000000C",
-      nome: "Soldaduras SL",
-      apelidos: "-",
+      dni: "12345678Z",
+      nome: "Usuario",
+      apelidos: "Apelidos",
       fecha_nacimiento: "2000-01-01",
       telefono: "981123456",
-      correo: "soldadura@email.com",
-      direccion: "Rua da Industria, 1",
-      municipio: "Santiago",
-      provincia: "A Coruña",
+      correo: "usuario@email.com",
+      direccion: "Rua da Camelias, 1",
+      municipio: "Santiago de Compostela",
+      provincia: "15",
     },
   ];
 
-  provincias.value = [
-    { id: "1", nombre: "A Coruña" },
-    { id: "2", nombre: "Lugo" },
-    { id: "3", nombre: "Ourense" },
-    { id: "4", nombre: "Pontevedra" },
-  ];
-
+  // Cargamos provincias desde la API (con try/catch para que no rompa si falla)
+  try {
+    provincias.value = await obtenerProvincias();
+    console.log("Provincias cargadas:", provincias.value.length);
+  } catch (error) {
+    console.error("Erro ao cargar as provincias:", error);
+  }
 });
 
-// Valida DNI (letra real), NIE y CIF (formato basico)
 function validarDni(dni) {
   if (!dni) return false;
   const valor = dni.toUpperCase().trim();
@@ -311,7 +320,6 @@ function validarDni(dni) {
   return false;
 }
 
-// Poner la primera letra de cada palabra en mayuscula
 function capitalizar(campo) {
   const v = novoPaciente[campo];
   if (!v) return;
@@ -322,7 +330,6 @@ function capitalizar(campo) {
     .join(" ");
 }
 
-// Valida un campo concreto y guarda el mensaje de error si lo hay
 function validarCampo(campo) {
   const v = novoPaciente[campo];
   let msg = "";
@@ -354,7 +361,6 @@ function validarCampo(campo) {
   erros[campo] = msg !== "";
 }
 
-// Valida todos los campos y guarda si todo esta correcto
 function gardarPaciente() {
   const campos = [
     "dni",
@@ -388,11 +394,11 @@ function gardarPaciente() {
   });
 }
 
-function eliminarUsuario(index) {
+function eliminarPacientes(index) {
   pacientes.value.splice(index, 1);
 }
 
-function editarUsuario(index) {
+function editarPacientes(index) {
   Object.assign(novoPaciente, pacientes.value[index]);
   Object.keys(erros).forEach((k) => {
     erros[k] = false;
@@ -447,15 +453,33 @@ form {
   height: 0.9rem;
 }
 
-.campo-dni { flex: 1; }
-.campo-nome { flex: 2; }
-.campo-apelidos { flex: 2; }
-.campo-fecha { flex: 1.5; }
-.campo-telefono { flex: 1.5; }
-.campo-correo { flex: 2; }
-.campo-direccion { flex: 3; }
-.campo-municipio { flex: 2; }
-.campo-provincia { flex: 1.9; }
+.campo-dni {
+  flex: 1;
+}
+.campo-nome {
+  flex: 2;
+}
+.campo-apelidos {
+  flex: 2;
+}
+.campo-fecha {
+  flex: 1.5;
+}
+.campo-telefono {
+  flex: 1.5;
+}
+.campo-correo {
+  flex: 2;
+}
+.campo-direccion {
+  flex: 2.9;
+}
+.campo-municipio {
+  flex: 2;
+}
+.campo-provincia {
+  flex: 2;
+}
 
 .campo label {
   min-width: 80px;
@@ -467,11 +491,13 @@ form {
 .campo input {
   flex: 1;
   min-width: 0;
+  max-width: 100%;
   padding: 0.5rem;
   border: 1px solid var(--gris-borde);
   border-radius: 0;
   box-sizing: border-box;
   font-size: 0.9rem;
+  color: var(--gris-texto);
 }
 
 .campo select:focus,
@@ -481,7 +507,16 @@ form {
   box-shadow: 0 0 0 2px rgba(76, 161, 54, 0.15);
 }
 
-.input-error {
+.placeholder-select {
+  color: #333 !important;
+  background-color: #e9e9e9 !important;
+  -webkit-text-fill-color: #333;
+}
+
+.input-error,
+.input-error.placeholder-select {
+  color: #d6336c !important;
+  -webkit-text-fill-color: #d6336c !important;
   background-color: #ffd6e0 !important;
   border: 1px solid #ff4d6d !important;
 }
@@ -559,16 +594,33 @@ h4 {
 }
 
 @media (max-width: 1200px) {
-  .fila { flex-wrap: wrap; }
-  .campo { flex: 1 1 45%; }
+  .fila {
+    flex-wrap: wrap;
+  }
+  .campo {
+    flex: 1 1 45%;
+  }
   .campo-direccion,
-  .campo-municipio { flex: 1 1 100%; }
+  .campo-municipio {
+    flex: 1 1 100%;
+  }
 }
 
 @media (max-width: 768px) {
-  .xestion-pacientes { padding: 1rem; }
-  .fila { flex-direction: column; gap: 0.5rem; }
-  .campo { flex: 1 1 100%; height: auto; min-height: 3.2rem; }
-  .erro-campo { padding-left: 0; }
+  .xestion-pacientes {
+    padding: 1rem;
+  }
+  .fila {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .campo {
+    flex: 1 1 100%;
+    height: auto;
+    min-height: 3.2rem;
+  }
+  .erro-campo {
+    padding-left: 0;
+  }
 }
 </style>
